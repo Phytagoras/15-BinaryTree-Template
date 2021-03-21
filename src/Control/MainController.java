@@ -3,6 +3,7 @@ package Control;
 import Model.BinaryTree;
 import View.DrawingPanel;
 import View.TreeView.TreeNode;
+import View.TreeView.TreePath;
 
 /**
  * Created by Jean-Pierre on 12.01.2017.
@@ -108,7 +109,7 @@ public class MainController {
         panel.removeAllObjects();
         //Der Baum wird in der Mitte des Panels beginnend gezeichnet: x = panel.getWidth()/2
         //Der linke und rechte Knoten in Tiefe 1 sind jeweils ein Viertel der Breite des Panels entfernt: spaceToTheSide = panel.getWidth()/4
-        showTree(binaryTree, panel, panel.getWidth() / 2, 50, panel.getWidth() / 4);
+        showTree(binaryTree, panel, panel.getWidth() / 2, 50, panel.getWidth() / 3);
 
         //Aufruf fordert das Panel zur Aktualisierung auf.
         panel.repaint();
@@ -125,11 +126,18 @@ public class MainController {
      * @param startY         y-Koordinate seiner Wurzel
      * @param spaceToTheSide Gibt an, wie weit horizontal entfernt die folgenden Bäume gezeichnet werden soll.
      */
-    private void showTree(BinaryTree tree, DrawingPanel panel, double startX, double startY, double spaceToTheSide){
-        //TODO 03: Vervollständige diese Methode. Aktuell wird nur der Wurzelknoten gezeichnet.
+    private void showTree(BinaryTree<String> tree, DrawingPanel panel, double startX, double startY, double spaceToTheSide){
+        int radius = 9;
         if (!tree.isEmpty()){
-            TreeNode node = new TreeNode(startX, startY, 10, tree.getContent().toString(), false);
-            panel.addObject(node);
+            panel.addObject(new TreeNode(startX, startY, radius,  tree.getContent(), true));        //DER RADUIS WIRD IRGENDWIE DOPPELT ANGEWENDET...WTF HABEN SIE DA GEMACHT??? ICH KANN SO NICHT ARBEITEN!
+            if(!tree.getLeftTree().isEmpty()){
+                panel.addObject(new TreePath(startX, startY + radius*2,startX - (spaceToTheSide /2), startY + 80 - radius*2,0, true ));
+            }
+            if(!tree.getRightTree().isEmpty()){
+                panel.addObject(new TreePath(startX, startY + radius*2,startX + (spaceToTheSide /2), startY + 80 - radius*2,0, true ));
+            }
+            showTree(tree.getLeftTree(), panel, startX - (spaceToTheSide /2), startY + 80,spaceToTheSide / 2);
+            showTree(tree.getRightTree(), panel, startX + (spaceToTheSide /2), startY + 80,spaceToTheSide / 2);
         }
 
 
