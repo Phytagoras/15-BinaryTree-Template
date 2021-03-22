@@ -161,7 +161,10 @@ public class MainController {
      */
     private String traverse(BinaryTree tree){
         //TODO 04: Nachdem wir geklärt haben, was eine Traversierung ist, muss diese Methode noch vervollständigt werden. Sollte ein Kinderspiel sein.
-        return "Traverse? Wat dat denn?";
+        if(!tree.isEmpty()){
+            return "" + tree.getContent() + traverse(tree.getLeftTree()) + traverse(tree.getRightTree());
+        }
+        return "";
     }
 
     /**
